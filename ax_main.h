@@ -617,6 +617,7 @@ static inline struct net_device_stats *ax_get_stats(struct net_device *netdev)
 }
 
 int ax_get_mac_pass(struct ax_device *axdev, u8 *mac);
+int ax_check_ether_addr(struct ax_device *axdev);
 void ax_set_tx_qlen(struct ax_device *dev);
 void ax_write_bulk_callback(struct urb *urb);
 

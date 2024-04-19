@@ -243,4 +243,30 @@ int ax88179a_siocdevprivate(struct net_device *netdev, struct ifreq *rq,
 #endif
 int ax88179a_ioctl(struct net_device *net, struct ifreq *rq, int cmd);
 void ax88179a_set_multicast(struct net_device *net);
+
+void ax88179a_get_fw_version(struct ax_device *axdev);
+int ax88179a_signature(struct ax_device *axdev, struct _ax_ioctl_command *info);
+int ax88179a_read_version(struct ax_device *axdev,
+			  struct _ax_ioctl_command *info);
+int ax88179a_write_flash(struct ax_device *axdev,
+			 struct _ax_ioctl_command *info);
+
+int ax88179a_read_flash(struct ax_device *axdev, struct _ax_ioctl_command *info);
+int ax88179a_program_efuse(struct ax_device *axdev,
+			   struct _ax_ioctl_command *info);
+int ax88179a_dump_efuse(struct ax_device *axdev, struct _ax_ioctl_command *info);
+
+int ax88179a_boot_to_rom(struct ax_device *axdev,
+			 struct _ax_ioctl_command *info);
+int ax88179a_erase_flash(struct ax_device *axdev,
+			 struct _ax_ioctl_command *info);
+int ax88179a_erase_sector_flash(struct ax_device *axdev,
+			 struct _ax_ioctl_command *info);
+
+
+int ax88179a_sw_reset(struct ax_device *axdev, struct _ax_ioctl_command *info);
+int ax88179a_autosuspend_en(struct ax_device *axdev,
+			    struct _ax_ioctl_command *info);
+int ax88179a_ieee_test(struct ax_device *axdev, struct _ax_ioctl_command *info);
+
 #endif /* End of __ASIX_AX88179A_772D_H */

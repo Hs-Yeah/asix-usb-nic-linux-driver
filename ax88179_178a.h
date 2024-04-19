@@ -26,6 +26,12 @@ extern const struct net_device_ops ax88179_netdev_ops;
 int ax88179_siocdevprivate(struct net_device *netdev, struct ifreq *rq,
 			   void __user *udata, int cmd);
 #endif
+
+int ax88179_signature(struct ax_device *axdev, struct _ax_ioctl_command *info);
+int ax88179_read_eeprom(struct ax_device *axdev, struct _ax_ioctl_command *info);
+int ax88179_write_eeprom(struct ax_device *axdev,
+			 struct _ax_ioctl_command *info);
+
 int ax88179_ioctl(struct net_device *net, struct ifreq *rq, int cmd);
 
 int ax88179_set_mac_addr(struct net_device *net, void *p);
