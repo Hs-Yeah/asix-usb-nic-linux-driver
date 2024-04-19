@@ -2021,7 +2021,8 @@ int ax_get_mac_pass(struct ax_device *axdev, u8 *mac)
 
 int ax_check_ether_addr(struct ax_device *axdev)
 {
-	u8 *addr = (u8 *)axdev->netdev->dev_addr;
+	const u8 *addr = (u8 *)axdev->netdev->dev_addr;
+	unsigned char mac_addr[ETH_ALEN];
 	u8 default_mac[6] = {0, 0x0e, 0xc6, 0x81, 0x79, 0x01};
 	u8 default_mac_178a[6] = {0, 0x0e, 0xc6, 0x81, 0x78, 0x01};
 
@@ -2030,7 +2031,8 @@ int ax_check_ether_addr(struct ax_device *axdev)
 	    !memcmp(axdev->netdev->dev_addr, default_mac, ETH_ALEN) ||
 	    !memcmp(axdev->netdev->dev_addr, default_mac_178a, ETH_ALEN)) {
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 6, 0)
-		eth_random_addr(addr);
+		eth_random_addr(mac_addr);
+		dev_addr_set(axdev->netdev, mac_addr);
 #else
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 4, 0)
 	eth_hw_addr_random(axdev->netdev);
@@ -2042,10 +2044,10 @@ random_ether_addr(axdev->netdev->dev_addr);
 #endif		
 #endif
 
-		addr[0] = 0;
-		addr[1] = 0x0E;
-		addr[2] = 0xC6;
-
+		// addr[0] = 0;
+		// addr[1] = 0x0E;
+		// addr[2] = 0xC6;
+		//
 		return -EADDRNOTAVAIL;
 	}
 
@@ -2093,28 +2095,28 @@ static int ax_get_chip_feature(struct ax_device *axdev)
 
 static int ax_get_mac_address(struct ax_device *axdev)
 {
+  unsigned char mac_addr[ETH_ALEN];
 	struct net_device *netdev = axdev->netdev;
 
 	if (ax_read_cmd(axdev, AX_ACCESS_MAC, AX_NODE_ID, ETH_ALEN,
-			ETH_ALEN, netdev->dev_addr, 0) < 0) {
+			ETH_ALEN, mac_addr, 0) < 0) {
 		dev_err(&axdev->intf->dev, "Failed to read MAC address");
 		return -ENODEV;
 	}
+  eth_hw_addr_set(netdev, mac_addr);
 
 	if (ax_check_ether_addr(axdev))
 		dev_warn(&axdev->intf->dev, "Found invalid MAC address value");
 
-	ax_get_mac_pass(axdev, netdev->dev_addr);
-
+	ax_get_mac_pass(axdev, mac_addr);
 
 	memcpy(netdev->perm_addr, netdev->dev_addr, ETH_ALEN);
 
 	if (ax_write_cmd(axdev, AX_ACCESS_MAC, AX_NODE_ID, ETH_ALEN,
-			ETH_ALEN, netdev->dev_addr) < 0) {
+			ETH_ALEN, mac_addr) < 0) {
 		dev_err(&axdev->intf->dev, "Failed to write MAC address");
 		return -ENODEV;
 	}
-
 	return 0;
 }
 
