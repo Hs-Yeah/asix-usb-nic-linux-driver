@@ -2032,7 +2032,7 @@ int ax_check_ether_addr(struct ax_device *axdev)
 	    !memcmp(axdev->netdev->dev_addr, default_mac_178a, ETH_ALEN)) {
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 6, 0)
 		eth_random_addr(mac_addr);
-		dev_addr_set(axdev->netdev, mac_addr);
+		eth_hw_addr_set(axdev->netdev, mac_addr);
 #else
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 4, 0)
 	eth_hw_addr_random(axdev->netdev);
