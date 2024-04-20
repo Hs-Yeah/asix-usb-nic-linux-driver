@@ -86,17 +86,16 @@ all:
 	$(CC) $(TOOL_EXTRA_CFLAGS) axcmd.c -o axcmd
 
 install:
-ifneq (,$(wildcard /lib/modules/$(shell uname -r)/$(MDIR)/ax88179_178a.ko))
-	gzip /lib/modules/$(shell uname -r)/$(MDIR)/ax88179_178a.ko
-endif
 	make -C $(KDIR) M=$(PWD) INSTALL_MOD_DIR=$(MDIR) modules_install
 	depmod -a
+	install -m 644 blacklist-ax88179_178a.conf /etc/modprobe.d/
 
 uninstall:
 ifneq (,$(wildcard /lib/modules/$(shell uname -r)/$(MDIR)/$(TARGET).ko))
 	rm -f /lib/modules/$(shell uname -r)/$(MDIR)/$(TARGET).ko
 endif
 	depmod -a
+	rm /etc/modprobe.d/blacklist-ax88179_178a.conf
 
 clean:
 	make -C $(KDIR) M=$(PWD) clean
