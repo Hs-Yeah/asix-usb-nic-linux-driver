@@ -87,7 +87,6 @@ all:
 
 install:
 	make -C $(KDIR) M=$(PWD) INSTALL_MOD_DIR=$(MDIR) modules_install
-	depmod -a
 	install -m 644 blacklist-ax88179_178a.conf /etc/modprobe.d/
 
 uninstall:
