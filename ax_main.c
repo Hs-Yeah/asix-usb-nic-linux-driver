@@ -156,7 +156,7 @@ int ax_get_link_ksettings(struct net_device *netdev,
 	mii_ethtool_get_link_ksettings(&axdev->mii, cmd);
 
 #ifdef ENABLE_AX88279
-	printk("============AX88279==========");
+	// printk("============AX88279==========");
 	if (axdev->chip_version == AX_VERSION_AX88279) {
 #if KERNEL_VERSION(5, 0, 0) <= LINUX_VERSION_CODE
 		linkmode_mod_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
